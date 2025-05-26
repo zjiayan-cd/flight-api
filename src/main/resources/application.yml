@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/flightapi?useSSL=false&serverTimezone=UTC
+    username: root
+    password: QWE123asd
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate   # 使用 schema.sql 建表
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  sql:
+    init:
+      mode: never     # 启动时不执行 schema.sql 和 data.sql
+
+server:
+  port: 8080
