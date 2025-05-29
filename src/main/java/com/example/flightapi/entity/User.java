@@ -15,12 +15,11 @@ public class User {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String firstName;
+    private String username;
 
     @Column(nullable = false)
     private String password;
 
-    private String lastName;
     private String email;
     private String phone;
     private String country;

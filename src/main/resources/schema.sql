@@ -11,9 +11,8 @@ CREATE TABLE IF NOT EXISTS airport (
 -- 使用 BCryptPasswordEncoder 加密,new BCryptPasswordEncoder().encode("password")
 CREATE TABLE IF NOT EXISTS user (
   id BIGINT PRIMARY KEY AUTO_INCREMENT,
-  first_name VARCHAR(50) NOT NULL UNIQUE,
+  username VARCHAR(100) NOT NULL UNIQUE,
   password VARCHAR(255) NOT NULL, 
-  last_name VARCHAR(100),
   email VARCHAR(100) UNIQUE,
   phone VARCHAR(20),
   country VARCHAR(100)
@@ -51,7 +50,7 @@ CREATE TABLE IF NOT EXISTS booking (
 );
 
 -- 乘客表
-CREATE TABLE IF NOT EXISTS passenger (
+/*CREATE TABLE IF NOT EXISTS passenger (
   id BIGINT PRIMARY KEY AUTO_INCREMENT,
   first_name VARCHAR(50) NOT NULL,
   last_name VARCHAR(50) NOT NULL,
@@ -62,8 +61,14 @@ CREATE TABLE IF NOT EXISTS passenger (
   email VARCHAR(100),
 --  CONSTRAINT fk_passenger_user FOREIGN KEY (user_id) REFERENCES user(id)
   CONSTRAINT fk_booking FOREIGN KEY (booking_id) REFERENCES booking(id)
+);*/
+CREATE TABLE passenger (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(100) NOT NULL,
+  booking_id BIGINT,
+  id_number VARCHAR(100),
+  CONSTRAINT fk_booking FOREIGN KEY (booking_id) REFERENCES booking(id)
 );
-
 
 -- 创建座位表
 --CREATE TABLE seat (

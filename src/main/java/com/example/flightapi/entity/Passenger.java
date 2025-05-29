@@ -13,14 +13,15 @@ public class Passenger {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String firstName;
+    @Column(name = "name", nullable = false, length = 100)
+    private String name;
 
-    private String lastName;
+    @Column(name = "id_number", length = 100)
+    private String idNumber;
 
-    private String email;
-
-    @ManyToOne
-    @JoinColumn(name = "booking_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "booking_id", foreignKey = @ForeignKey(name = "fk_booking"))
     private Booking booking;
+    
 }
 

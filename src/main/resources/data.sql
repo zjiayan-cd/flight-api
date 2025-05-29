@@ -1,4 +1,4 @@
--- 插入机场数据
+ 插入机场数据
 INSERT IGNORE INTO airport (code, name, city, country) VALUES
 ('PEK', 'Beijing Capital International Airport', 'Beijing', 'China'),
 ('PVG', 'Shanghai Pudong International Airport', 'Shanghai', 'China'),
