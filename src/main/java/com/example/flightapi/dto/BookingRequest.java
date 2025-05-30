@@ -6,6 +6,6 @@ import java.util.List;
 
 @Data
 public class BookingRequest {
-    private Long userId;
+    private String username;
     private List<BookingItemDTO> bookings;
 }

@@ -28,17 +28,16 @@ public class FlightController {
     	
         // 示例：基础过滤逻辑
         List<Flight> flights = flightRepository.findAll().stream()
-            .filter(f -> f.getDepartureAirport().getCode().equalsIgnoreCase(request.getFrom()))
-            .filter(f -> f.getDestinationAirport().getCode().equalsIgnoreCase(request.getTo()))
+            .filter(f -> f.getDeparture().getCode().equalsIgnoreCase(request.getFrom()))
+            .filter(f -> f.getArrival().getCode().equalsIgnoreCase(request.getTo()))
             .collect(Collectors.toList());
 
         return flights.stream()
             .map(flight -> new FlightResponse(
                 flight.getId(),
                 flight.getFlightNumber(),
-                "https://via.placeholder.com/40", // 模拟 logo
-                flight.getDepartureAirport().getCity(),
-                flight.getDestinationAirport().getCity(),
+                flight.getDeparture().getCity(),
+                flight.getArrival().getCity(),
                 flight.getDepartureTime().format(formatter),
                 flight.getArrivalTime().format(formatter),
                 flight.getPrice().doubleValue()

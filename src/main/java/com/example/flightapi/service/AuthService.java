@@ -48,10 +48,10 @@ public class AuthService {
     
     public LoginResponse login(LoginRequest request) {
     	User user = userRepository.findByUsername(request.getUsername())
-    			.orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username"));
+    			.orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password."));
     	
     	if(!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-    		throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid password.");
+    		throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password.");
     	}
     	
     	String token = jwtTokenProvider.generateToken(user);

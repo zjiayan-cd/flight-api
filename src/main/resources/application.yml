@@ -22,5 +22,5 @@ server:
 
 app:
   jwt:
-    secret: MySuperSecretKeyThatIsAtLeast32BytesLongForHS256
-    expiration-ms: 86400000   # 1 天有效期
+    secret: YmFzZTY0ZW5jb2RlZHNlY3JldGtleWZvcnRlc3Rpbmc=    #用Base64 编码的密钥, 更安全
+    expiration-ms: 1800000   # 30分钟，建议10-30分钟之内

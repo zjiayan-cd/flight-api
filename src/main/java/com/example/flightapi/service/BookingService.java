@@ -1,8 +1,10 @@
 package com.example.flightapi.service;
 
 import com.example.flightapi.dto.BookingRequest;
+import com.example.flightapi.dto.BookingDTO;
 import com.example.flightapi.dto.BookingItemDTO;
 import com.example.flightapi.dto.PassengerDTO;
+import com.example.flightapi.dto.FlightResponse;
 import com.example.flightapi.entity.Booking;
 import com.example.flightapi.entity.Flight;
 import com.example.flightapi.entity.Passenger;
@@ -35,10 +37,32 @@ public class BookingService {
         this.bookingRepository = bookingRepository;
         this.passengerRepository = passengerRepository;
     }
+    
+    public List<BookingDTO> getBookingsByUsername(String username) {
+    	List<Booking> bookings = bookingRepository.findByUserUsername(username);
+    	return bookings.stream()
+                .map(booking -> new BookingDTO(
+                		booking.getReference(),
+                		booking.getStatus(),
+                		new FlightResponse(
+                                booking.getFlight().getId(),
+                                booking.getFlight().getFlightNumber(),
+                                booking.getFlight().getDeparture().getCode(),
+                                booking.getFlight().getArrival().getCode(),
+                                booking.getFlight().getDepartureTime().toString(),
+                                booking.getFlight().getArrivalTime().toString(),
+                                booking.getFlight().getPrice().doubleValue()
+                            )
+                		)
+                	)
+                    .toList();
+    }
+
 
     @Transactional
     public List<Booking> createBookings(BookingRequest bookingRequest) {
-        User user = userRepository.findById(bookingRequest.getUserId())
+    	System.out.println("userName:"+bookingRequest.getUsername());
+        User user = userRepository.findByUsername(bookingRequest.getUsername())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         List<Booking> savedBookings = new ArrayList<>();

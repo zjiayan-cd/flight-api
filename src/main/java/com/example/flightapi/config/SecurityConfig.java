@@ -30,6 +30,9 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/**").permitAll() // 注册和登录接口放行
                 .requestMatchers("/api/airports/**").permitAll() // 机场数据不认证就能访问
+                .requestMatchers("/api/flights/**").permitAll() 
+//                .requestMatchers("/api/bookings/**", "/api/my-bookings/**").authenticated()
+//                .requestMatchers("/api/user/**").authenticated()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

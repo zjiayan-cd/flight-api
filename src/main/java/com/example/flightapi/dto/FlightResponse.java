@@ -2,13 +2,14 @@ package com.example.flightapi.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class FlightResponse {
     private Long id;
     private String flightNumber;
-    private String airlineLogo;
     private String departure;
     private String arrival;
     private String departureTime;

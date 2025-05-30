@@ -55,7 +55,8 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<optional>true</optional>
+			<version>1.18.30</version> <!-- 推荐添加版本号 -->
+  			<scope>provided</scope>    <!-- 明确只在编译期使用 -->
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
