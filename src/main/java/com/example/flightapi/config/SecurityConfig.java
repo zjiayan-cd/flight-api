@@ -31,6 +31,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/auth/**").permitAll() // 注册和登录接口放行
                 .requestMatchers("/api/airports/**").permitAll() // 机场数据不认证就能访问
                 .requestMatchers("/api/flights/**").permitAll() 
+                .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
 //                .requestMatchers("/api/bookings/**", "/api/my-bookings/**").authenticated()
 //                .requestMatchers("/api/user/**").authenticated()
                 .anyRequest().authenticated()

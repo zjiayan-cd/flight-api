@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS user (
 -- 创建航班表
 CREATE TABLE IF NOT EXISTS flight (
   id BIGINT PRIMARY KEY AUTO_INCREMENT,
-  flight_number VARCHAR(20) NOT NULL UNIQUE,
+  flight_number VARCHAR(20) NOT NULL,
   departure_airport_id BIGINT NOT NULL,
   destination_airport_id BIGINT NOT NULL,
   departure_time DATETIME NOT NULL,

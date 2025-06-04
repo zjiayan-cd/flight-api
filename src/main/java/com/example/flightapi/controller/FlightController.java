@@ -1,5 +1,7 @@
 package com.example.flightapi.controller;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,12 +26,19 @@ public class FlightController {
 
     @PostMapping("/search")
     public List<FlightResponse> searchFlights(@RequestBody FlightSearchRequest request) {
-    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    	LocalDateTime now = LocalDateTime.now();
+ 
+    	System.out.println("*****" + request.getDepartDate());
     	
-        // 示例：基础过滤逻辑
+        // 基础过滤逻辑
         List<Flight> flights = flightRepository.findAll().stream()
             .filter(f -> f.getDeparture().getCode().equalsIgnoreCase(request.getFrom()))
             .filter(f -> f.getArrival().getCode().equalsIgnoreCase(request.getTo()))
+            .filter(f -> {
+            	LocalDateTime departureTime  = f.getDepartureTime();
+            	return (departureTime.isAfter(now) && departureTime.toLocalDate().isEqual(LocalDate.parse(request.getDepartDate().substring(0, 10), formatter)));
+            })
             .collect(Collectors.toList());
 
         return flights.stream()

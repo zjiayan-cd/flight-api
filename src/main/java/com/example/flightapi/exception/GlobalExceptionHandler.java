@@ -2,8 +2,10 @@ package com.example.flightapi.exception;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -13,13 +15,19 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.example.flightapi.dto.ErrorResponse;
 
+import lombok.RequiredArgsConstructor;
+
 @RestControllerAdvice
+@RequiredArgsConstructor
 public class GlobalExceptionHandler {
+	
+	private final MessageSource messageSource;
 
 //	请求体参数校验失败 @Valid 触发
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<ErrorResponse> handleValidationErrors(MethodArgumentNotValidException ex) {
+	public ResponseEntity<ErrorResponse> handleValidationErrors(MethodArgumentNotValidException ex, Locale locale) {
 		Map<String, String> errors = new HashMap<>();
+		/**
 		ex.getBindingResult().getFieldErrors()
 				.forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
 		ErrorResponse errorResponse = ErrorResponse.builder()
@@ -29,15 +37,30 @@ public class GlobalExceptionHandler {
 				.timestamp(LocalDateTime.now())
 				.build();	
 		return ResponseEntity.badRequest().body(errorResponse);
+		**/
+		ex.getBindingResult().getFieldErrors().forEach(error -> {
+            String localizedMessage = messageSource.getMessage(error, locale);
+            errors.put(error.getField(), localizedMessage);
+        });
+
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(HttpStatus.BAD_REQUEST.value())
+                .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                .message(messageSource.getMessage("validation.failed", null, locale))
+                .timestamp(LocalDateTime.now())
+                .build();
+
+        return ResponseEntity.badRequest().body(errorResponse);
 	}
 	  
 	@ExceptionHandler(ResponseStatusException.class) 
-	public ResponseEntity<ErrorResponse> handleResponseStatusException(ResponseStatusException ex) { 
+	public ResponseEntity<ErrorResponse> handleResponseStatusException(ResponseStatusException ex, Locale locale) { 
 		  HttpStatus status = HttpStatus.valueOf(ex.getStatusCode().value());
+		  String localizedMessage = messageSource.getMessage(ex.getReason(), null, ex.getReason(), locale);
 		  ErrorResponse error = ErrorResponse.builder()
 				  .status(status.value())
 				  .error(status.getReasonPhrase())
-				  .message(ex.getReason())
+				  .message(localizedMessage)
 				  .timestamp(LocalDateTime.now())
 				  .build();
 		  return ResponseEntity.status(ex.getStatusCode()).body(error); 

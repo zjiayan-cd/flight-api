@@ -25,7 +25,7 @@ public class AuthService {
     public void register(RegisterRequest request) {
         // 检查用户名冲突
         if (userRepository.findByUsername(request.getUsername()).isPresent()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username is already taken");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "username.taken");
         }
 
         // 检查邮箱冲突
@@ -48,10 +48,10 @@ public class AuthService {
     
     public LoginResponse login(LoginRequest request) {
     	User user = userRepository.findByUsername(request.getUsername())
-    			.orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password."));
+    			.orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "login.invalid"));
     	
     	if(!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-    		throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password.");
+    		throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "login.invalid");
     	}
     	
     	String token = jwtTokenProvider.generateToken(user);

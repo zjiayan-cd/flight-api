@@ -17,6 +17,10 @@ spring:
     init:
       mode: never     # 启动时不执行 schema.sql 和 data.sql
 
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
+
 server:
   port: 8080
 
