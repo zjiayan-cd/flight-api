@@ -28,6 +28,7 @@ public class FlightController {
     public List<FlightResponse> searchFlights(@RequestBody FlightSearchRequest request) {
     	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     	LocalDateTime now = LocalDateTime.now();
+    	DateTimeFormatter formatterRes = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
  
     	System.out.println("*****" + request.getDepartDate());
     	
@@ -47,8 +48,8 @@ public class FlightController {
                 flight.getFlightNumber(),
                 flight.getDeparture().getCity(),
                 flight.getArrival().getCity(),
-                flight.getDepartureTime().format(formatter),
-                flight.getArrivalTime().format(formatter),
+                flight.getDepartureTime().format(formatterRes),
+                flight.getArrivalTime().format(formatterRes),
                 flight.getPrice().doubleValue()
             ))
             .collect(Collectors.toList());

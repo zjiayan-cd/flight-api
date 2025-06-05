@@ -47,8 +47,8 @@ public class BookingService {
                 		new FlightResponse(
                                 booking.getFlight().getId(),
                                 booking.getFlight().getFlightNumber(),
-                                booking.getFlight().getDeparture().getCode(),
-                                booking.getFlight().getArrival().getCode(),
+                                booking.getFlight().getDeparture().getCity(),
+                                booking.getFlight().getArrival().getCity(),
                                 booking.getFlight().getDepartureTime().toString(),
                                 booking.getFlight().getArrivalTime().toString(),
                                 booking.getFlight().getPrice().doubleValue()
