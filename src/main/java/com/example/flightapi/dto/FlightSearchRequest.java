@@ -10,4 +10,8 @@ public class FlightSearchRequest {
     private String departDate;
     private String returnDate; // roundtrip 才用到
     private int passengers;
+    private int page = 1;
+    private int size = 5;
+    private String sortBy = "price";
+    private String sortOrder = "asc";
 }
