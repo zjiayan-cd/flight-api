@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS booking (
 --  CONSTRAINT fk_passenger_user FOREIGN KEY (user_id) REFERENCES user(id)
   CONSTRAINT fk_booking FOREIGN KEY (booking_id) REFERENCES booking(id)
 );*/
-CREATE TABLE passenger (
+CREATE TABLE IF NOT EXISTS passenger (
   id BIGINT PRIMARY KEY AUTO_INCREMENT,
   name VARCHAR(100) NOT NULL,
   booking_id BIGINT,
