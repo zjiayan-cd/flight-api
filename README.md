@@ -40,7 +40,7 @@ cd flight-api
 ```
 ### 本地运行  
 
-确保已经配置好本地 MySQL 数据库，并在 application.yml 中设置正确的数据库连接信息：
+确保已经配置好本地 MySQL 数据库，并在 application-local.yml 中设置正确的数据库连接信息：
 
 ```
 spring:  
@@ -60,23 +60,35 @@ spring:
 
 - 后端已部署在 AWS ECS 上，集群名称：jiayan-flight-api。
 
-- 访问地址（公网）：http://3.27.45.236:8080   
-- 测试链接：http://3.27.45.236:8080/api/airports
+- 访问地址（公网）：http://16.176.135.170:8080   
+- 测试链接：http://16.176.135.170:8080/api/airports
 
-- Swagger 文档（公网）：http://3.27.45.236:8080/swagger-ui.html(有问题)
+- Swagger 文档（公网）：http://16.176.135.170:8080/swagger-ui.html(有问题)
 
 
 ### 数据库配置（生产）
 
-- 数据库使用 AWS RDS（MySQL），请在生产环境中填写如下连接信息：
+- 数据库使用 AWS RDS（MySQL），请在application-prod.yml中填写如下连接信息：
 
 ```
 spring:
   datasource:
     url: jdbc:mysql://jiayan-flightdb.cj6gcogsidzt.ap-southeast-2.rds.amazonaws.com:3306/flight_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&characterEncoding=utf8
-    username: rds_user
-    password: rds_password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+
+server:
+  port: 8080
+  address: 0.0.0.0
 ```
+
+### AWS Task Definition 环境变量配置：
+- SPRING_PROFILES_ACTIVE: prod
+- SPRING_DATASOURCE_USERNAME: admin
+- SPRING_DATASOURCE_PASSWORD: xxxxxx(请填写正确的数据库密码)
 
 ### 认证  
 - 登录成功后返回 JWT 令牌。
