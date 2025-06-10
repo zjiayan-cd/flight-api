@@ -19,9 +19,13 @@
 ### API 接口功能概览  
 
 - 用户注册与登录（支持 JWT 鉴权）
-- 航班搜索与筛选  
-- 航班预订、订单查看  
-- 异常集中处理
+- 使用 BCrypt 进行密码哈希加密
+- 航班搜索与筛选 （支持分页和排序）
+- 支持单程和往返航班
+- 航班预订并关联用户信息、订单查看  
+- 输入校验（基于 Bean Validation）
+- 分层架构（DTO、控制器、服务、仓库）
+- 全局异常处理
 - 国际化支持（错误信息多语言） 
 - Swagger/OpenAPI 文档自动生成(有问题) 
 
@@ -31,8 +35,8 @@
 
 ### 克隆项目
 ```
-git clone https://github.com/your-org/flightapi.git
-cd flightapi
+git clone https://github.com/zjiayan-cd/flight-api.git 
+cd flight-api
 ```
 ### 本地运行  
 
@@ -41,7 +45,7 @@ cd flightapi
 ```
 spring:  
   datasource:  
-    url: jdbc:mysql://localhost:3306/flightdb  
+    url: jdbc:mysql://localhost:3306/flightapi?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true  
     username: your_user  
     password: your_password  
 ```
@@ -74,6 +78,19 @@ spring:
     password: rds_password
 ```
 
- 
+### 认证  
+- 登录成功后返回 JWT 令牌。
+- 预订相关的接口需要携带令牌。
+- 令牌通过 JwtAuthenticationFilter 进行验证。
+- 令牌应存放在请求头 Authorization: Bearer <token> 中。
+- 用户密码使用 BCryptPasswordEncoder 安全加密存储。
+
+### 国际化
+- 根据请求头中的 Accept-Language 使用 Spring 的 MessageSource 进行解析。
+- 默认语言为英文（en）。
+```
+src/main/resources/messages_en.properties
+src/main/resources/messages_zh.properties
+```
 
 
