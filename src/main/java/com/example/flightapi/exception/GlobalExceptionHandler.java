@@ -1,6 +1,7 @@
 package com.example.flightapi.exception;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -22,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 public class GlobalExceptionHandler {
 	
 	private final MessageSource messageSource;
+	private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
 //	请求体参数校验失败 @Valid 触发
 	@ExceptionHandler(MethodArgumentNotValidException.class)
@@ -47,7 +49,7 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.BAD_REQUEST.value())
                 .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
                 .message(messageSource.getMessage("validation.failed", null, locale))
-                .timestamp(LocalDateTime.now())
+                .timestamp(LocalDateTime.now().format(FORMATTER))
                 .build();
 
         return ResponseEntity.badRequest().body(errorResponse);
@@ -61,7 +63,7 @@ public class GlobalExceptionHandler {
 				  .status(status.value())
 				  .error(status.getReasonPhrase())
 				  .message(localizedMessage)
-				  .timestamp(LocalDateTime.now())
+				  .timestamp(LocalDateTime.now().format(FORMATTER))
 				  .build();
 		  return ResponseEntity.status(ex.getStatusCode()).body(error); 
 	 }  	  
@@ -74,7 +76,7 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .error(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase())
                 .message(ex.getMessage())
-                .timestamp(LocalDateTime.now())
+                .timestamp(LocalDateTime.now().format(FORMATTER))
                 .build();
 		return ResponseEntity.internalServerError().body(error);
 	}	
