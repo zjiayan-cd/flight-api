@@ -13,7 +13,7 @@
 - JWT (`jjwt` 0.11.5)
 - Lombok
 - MySQL
-- OpenAPI (springdoc-openapi)
+- OpenAPI (springdoc-openapi) 2.8.9
 - Maven
 
 ### API 接口功能概览  
@@ -27,7 +27,7 @@
 - 分层架构（DTO、控制器、服务、仓库）
 - 全局异常处理
 - 国际化支持（错误信息多语言） 
-- Swagger/OpenAPI 文档自动生成(有问题) 
+- Swagger/OpenAPI 文档自动生成 
 
 ---
 
@@ -54,7 +54,7 @@ spring:
 ./mvnw spring-boot:run
 
 ### 本地 Swagger 文档
-- 访问地址：http://localhost:8080/swagger-ui.html(有问题)
+- 访问地址：http://localhost:8080/swagger-ui.html
 
 ### 部署信息（生产环境） 
 
@@ -63,7 +63,7 @@ spring:
 - 访问地址（公网）：http://16.176.135.170:8080   
 - 测试链接：http://16.176.135.170:8080/api/airports
 
-- Swagger 文档（公网）：http://16.176.135.170:8080/swagger-ui.html(有问题)
+- Swagger 文档（公网）：http://16.176.135.170:8080/swagger-ui.html
 
 
 ### 数据库配置（生产）
@@ -99,10 +99,40 @@ server:
 
 ### 国际化
 - 根据请求头中的 Accept-Language 使用 Spring 的 MessageSource 进行解析。
-- 默认语言为英文（en）。
+- 默认语言为英文（en）。  
+
 ```
 src/main/resources/messages_en.properties
 src/main/resources/messages_zh.properties
 ```
+  
+### 统一响应结构与异常处理  
+  
+保证后端接口返回数据结构统一、易于前端处理
+所有接口返回数据均使用 BaseResponse<T> 包装，结构示例如下：  
+
+``` 
+{
+  "code": 200,
+  "message": "OK",
+  "data": { ... }
+}
+```
+  
+### 统一异常处理  
+使用 @RestControllerAdvice 定义 GlobalExceptionHandler，捕获并处理业务异常、参数校验异常及未知异常。
+异常响应也采用统一的 BaseResponse 格式，返回对应的状态码和错误信息，保证接口返回格式一致。
+示例异常响应：  
+  
+```  
+{
+  "code": 400,
+  "message": "Validation failed",
+  "data": null,
+  "timestamp": "2025-06-13 15:30:00"
+}
+```
+
+
 
 

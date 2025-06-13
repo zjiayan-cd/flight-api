@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.example.flightapi.common.BaseResponse;
 import com.example.flightapi.dto.ErrorResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -27,19 +28,8 @@ public class GlobalExceptionHandler {
 
 //	请求体参数校验失败 @Valid 触发
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<ErrorResponse> handleValidationErrors(MethodArgumentNotValidException ex, Locale locale) {
+	public ResponseEntity<BaseResponse<ErrorResponse>> handleValidationErrors(MethodArgumentNotValidException ex, Locale locale) {
 		Map<String, String> errors = new HashMap<>();
-		/**
-		ex.getBindingResult().getFieldErrors()
-				.forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
-		ErrorResponse errorResponse = ErrorResponse.builder()
-				.status(HttpStatus.BAD_REQUEST.value())
-				.error(HttpStatus.BAD_REQUEST.getReasonPhrase())
-				.message("Validation failed")
-				.timestamp(LocalDateTime.now())
-				.build();	
-		return ResponseEntity.badRequest().body(errorResponse);
-		**/
 		ex.getBindingResult().getFieldErrors().forEach(error -> {
             String localizedMessage = messageSource.getMessage(error, locale);
             errors.put(error.getField(), localizedMessage);
@@ -52,7 +42,7 @@ public class GlobalExceptionHandler {
                 .timestamp(LocalDateTime.now().format(FORMATTER))
                 .build();
 
-        return ResponseEntity.badRequest().body(errorResponse);
+        return ResponseEntity.badRequest().body(BaseResponse.error(errorResponse));
 	}
 	  
 	@ExceptionHandler(ResponseStatusException.class) 

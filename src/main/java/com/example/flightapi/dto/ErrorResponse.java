@@ -1,5 +1,6 @@
 package com.example.flightapi.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -7,9 +8,17 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 @Builder
+@Schema(description = "错误信息")
 public class ErrorResponse {
-    private int status; // HTTP 状态码
-    private String error; // 状态文本，如 "Bad Request"
-    private String message; // 主错误信息
+	@Schema(description = "HTTP 状态码", example = "400")
+    private int status; 
+	
+	@Schema(description = "错误类型", example = "Bad Request")
+    private String error; 
+	
+	@Schema(description = "详细错误信息", example = "Validation failed")
+    private String message; 
+	
+	@Schema(description = "时间戳", example = "2025-06-13 15:00:00")
     private String timestamp;
 }
