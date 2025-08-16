@@ -1,0 +1,26 @@
+spring:
+  profiles:
+    active: local  # 默认启用 local 配置，可通过启动参数覆盖
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+  sql:
+    init:
+      mode: never
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
+
+  logging:
+    level:
+      org.hibernate.SQL: debug
+      org.hibernate.type.descriptor.sql.BasicBinder: trace
+
+server:
+  port: 8080
+
+app:
+  jwt:
+    secret: YmFzZTY0ZW5jb2RlZHNlY3JldGtleWZvcnRlc3Rpbmc=
+    expiration-ms: 1800000
